@@ -57,7 +57,7 @@ rounded = numpy.rint(predictions)
 diff = rounded - Yt
 res = numpy.empty(size_y, dtype='s256')
 for i in range(size_y)
-  if diff(0) == 0 && diff(1) == 0
+  if diff(i,0) == 0 && diff(i,1) == 0
     res(i) = 'correct'
   else
     res(i) = 'incorrect'

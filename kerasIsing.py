@@ -53,4 +53,4 @@ print("\n%s: %.2f%%" % (model.metrics_names[1], scores[1]*100))
 # calculate predictions
 predictions = model.predict(Xt)
 # print predictions
-print(predictions)
+print(numpy.concatenate([predictions, Yt],axis=1))

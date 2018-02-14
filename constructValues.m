@@ -29,7 +29,7 @@ for iter = 1 : numIters
     below = mod(row + 1 - 1, size(spin,1)) + 1;
     left  = mod(col - 1 - 1, size(spin,2)) + 1;
     right = mod(col + 1 - 1, size(spin,2)) + 1;
-    neighbors = [spin(above,col);spin(row,left);spin(row,right);(below,col)];
+    neighbors = [spin(above,col);spin(row,left);spin(row,right);spin(below,col)];
     dE = 2 * J * spin(row, col) * sum(neighbors);
     prob = exp(-dE / kT);
     if dE <= 0 || rand() <= prob

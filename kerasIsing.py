@@ -39,7 +39,7 @@ model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy']
 # BACKPROPAGATION #
 ###################
 # Fit the model
-model.fit(X, Y, epochs=1500, batch_size=10)
+model.fit(X, Y, epochs=150, batch_size=10)
 
 ##############
 # EVALUATION #
@@ -52,14 +52,12 @@ print("\n%s: %.2f%%" % (model.metrics_names[1], scores[1]*100))
 ###########
 # calculate predictions
 predictions = model.predict(Xt)
-rounded = numpy.rint(predictions)
 # check accuracy
-diff = rounded - Yt
-res = numpy.empty(size_y, dtype='s256')
-for i in range(size_y)
-  if diff(i,0) == 0 && diff(i,1) == 0
-    res(i) = 'correct'
-  else
-    res(i) = 'incorrect'
+diff = numpy.rint(predictions) - Yt
+res = numpy.empty([size_y, 1], dtype='str')
+for i in range(size_y):
+    res[i] = 'i'
+    if diff[i,0] == 0 and diff[i,1] == 0:
+        res[i] = 'c'
 # print predictions
-print(numpy.concatenate([rounded, Yt, res],axis=1))
+print(numpy.concatenate([predictions, Yt, res],axis=1))

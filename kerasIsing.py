@@ -3,6 +3,7 @@
 ###########
 from keras.models import Sequential
 from keras.layers import Dense
+from keras.layers import Flatten
 import math
 import numpy
 
@@ -26,17 +27,20 @@ Xt = testset[:,0:border]
 Yt = testset[:,border:size_x]
 # convert input to matrices
 length = int(math.sqrt(size_x))
-X_i = numpy.empty([length, length, size_y])
+X_i = numpy.empty([size_y, length, length])
+X_it = numpy.empty([size_y, length, length])
 for i in range(size_y):
 	for j in range(length):
-		X_i[:,j,i] = X[i,j*length:(j+1)*length]
+		X_it[i,j,:] = Xt[i,j*length:(j+1)*length]
+		X_i[i,j,:] = X[i,j*length:(j+1)*length]
 
 #########
 # MODEL #
 #########
 # Define model
 model = Sequential()
-model.add(Dense(border, input_dim=border, activation='relu'))
+model.add(Dense(length, input_shape=[length, length], activation='relu'))
+model.add(Flatten())
 model.add(Dense(2, activation='sigmoid'))
 # Compile model
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
@@ -45,19 +49,20 @@ model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy']
 # BACKPROPAGATION #
 ###################
 # Fit the model
-model.fit(X, Y, epochs=500, batch_size=10)
+model.fit(X_i, Y, epochs=500, batch_size=10)
 
 ##############
 # EVALUATION #
 ##############
-scores = model.evaluate(Xt, Yt)
+# evaluate test data
+scores = model.evaluate(X_it, Yt)
 print("\n%s: %.2f%%" % (model.metrics_names[1], scores[1]*100))
 
 ###########
 # PREDICT #
 ###########
 # calculate predictions
-predictions = model.predict(Xt)
+predictions = model.predict(X_it)
 # check accuracy
 diff = numpy.rint(predictions) - Yt
 res = numpy.empty([size_y, 1], dtype='str')

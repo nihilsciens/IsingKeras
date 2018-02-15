@@ -3,6 +3,7 @@
 ###########
 from keras.models import Sequential
 from keras.layers import Dense
+import math
 import numpy
 
 ################
@@ -23,6 +24,12 @@ Y = dataset[:,border:size_x]
 # do the same for test data
 Xt = testset[:,0:border]
 Yt = testset[:,border:size_x]
+# convert input to matrices
+length = int(math.sqrt(size_x))
+X_i = numpy.empty([length, length, size_y])
+for i in range(size_y):
+	for j in range(0, length, size_x):
+		X_i[:,j,i] = X[i,j:j+length]
 
 #########
 # MODEL #
@@ -30,7 +37,6 @@ Yt = testset[:,border:size_x]
 # Define model
 model = Sequential()
 model.add(Dense(border, input_dim=border, activation='relu'))
-model.add(Dense(8, activation='sigmoid'))
 model.add(Dense(2, activation='sigmoid'))
 # Compile model
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
@@ -39,7 +45,7 @@ model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy']
 # BACKPROPAGATION #
 ###################
 # Fit the model
-model.fit(X, Y, epochs=150, batch_size=10)
+model.fit(X, Y, epochs=500, batch_size=10)
 
 ##############
 # EVALUATION #

@@ -28,8 +28,8 @@ Yt = testset[:,border:size_x]
 length = int(math.sqrt(size_x))
 X_i = numpy.empty([length, length, size_y])
 for i in range(size_y):
-	for j in range(0, length, size_x):
-		X_i[:,j,i] = X[i,j:j+length]
+	for j in range(length):
+		X_i[:,j,i] = X[i,j*length:(j+1)*length]
 
 #########
 # MODEL #

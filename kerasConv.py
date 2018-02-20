@@ -42,7 +42,7 @@ for i in range(size_y):
 # Define model
 model = Sequential()
 model.add(Conv2D(length,kernel_size=[2,2],input_shape=[length,length,1],strides=[2,2],padding='valid',activation='relu'))
-model.add(MaxPooling2D(pool_size=(2,2),strides=None,padding='valid'))
+model.add(MaxPooling2D(pool_size=(2,2),strides=2,padding='valid'))
 model.add(Flatten())
 model.add(Dense(2,activation='sigmoid'))
 # Compile model
